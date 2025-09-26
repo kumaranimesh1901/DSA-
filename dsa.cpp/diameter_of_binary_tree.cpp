@@ -26,7 +26,7 @@ Node* build_Tree(vector<int> preorder) {
     return root;
 }
 
-int height(Node* root) {
+int height(Node* root) { // time-complx=O(n2)
     if (root == NULL) return 0;
     return max(height(root->left), height(root->right)) + 1;
 }
@@ -50,3 +50,31 @@ int main() {
 
     return 0;
 }
+
+
+/*  
+
+time-complx=O(n)
+
+
+
+
+int ans=0;
+int height(TreeNode* root)
+{
+    if(root==NULL) return 0;
+    
+        int leftht=height(root->left);
+        int rightht=height(root->right);
+        ans=max(ans,leftht+rightht);    current diameter of root node
+
+        return max(leftht,rightht)+1;
+    }
+
+    int diameterOfBinaryTree(TreeNode* root) {
+        
+        height(root);
+
+        return ans;
+        
+    }*/
