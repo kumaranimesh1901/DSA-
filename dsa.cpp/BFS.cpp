@@ -58,16 +58,48 @@ class graph
         vector<bool> visited(v,false);
         dfshelper(0,visited);
     }
+    bool isCyclicHelper(int u, vector<bool> &visited, int parent)
+    {
+        visited[u]=true;
+        for(auto v:l[u])
+        {
+            if(!visited[v])
+            {
+                if(isCyclicHelper(v,visited,u))
+                {
+                    return true;
+                }
+            }
+            else if(v!=parent)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    bool isCyclic()
+    {        vector<bool> visited(v,false);
+        for(int i=0;i<v;i++)        {
+            if(!visited[i])            {
+                if(isCyclicHelper(i,visited,-1))                {
+                    return true;                }
+            }
+        } 
+        return false;
+    }
 };
 int main()
 {
     graph g(6);
     g.addEdge(0,1);
+    g.addEdge(0,2);
+    g.addEdge(0,3);
     g.addEdge(1,2);
-    g.addEdge(1,3);
-    g.addEdge(2,4);
+    g.addEdge(3,4);
     g.bfs();
+    cout<<endl;
+    cout<<g.isCyclic();
     cout<<endl;
     g.dfs();
 
-}   
+}  
