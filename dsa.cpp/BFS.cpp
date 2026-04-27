@@ -87,6 +87,46 @@ class graph
         } 
         return false;
     }
+    bool iscyclcBfs(int src,vector<bool> &visited)
+    {
+        queue<pair<int,int>> Q;
+        Q.push({src,-1});
+        visited[src]=true;
+        while(Q.size()>0)
+        {
+            int u=Q.front().first;
+            int parent=Q.front().second;
+            Q.pop();
+            for(auto v:l[u])
+            {
+                if(!visited[v])
+                {
+                    visited[v]=true;
+                    Q.push({v,u});
+                }
+                else if(v!=parent)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    bool isCyclicBfs()
+    {
+        vector<bool> visited(v,false);
+        for(int i=0;i<v;i++)
+        {
+            if(!visited[i])
+            {
+                if(iscyclcBfs(i,visited))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 };
 int main()
 {
@@ -99,6 +139,8 @@ int main()
     g.bfs();
     cout<<endl;
     cout<<g.isCyclic();
+    cout<<endl;
+    cout<<g.isCyclicBfs();//O(V+E)
     cout<<endl;
     g.dfs();
 
