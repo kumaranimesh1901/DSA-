@@ -81,8 +81,10 @@ class graph
     {        vector<bool> visited(v,false);
         for(int i=0;i<v;i++)        {
             if(!visited[i])            {
-                if(isCyclicHelper(i,visited,-1))                {
-                    return true;                }
+                if(isCyclicHelper(i,visited,-1))
+                {
+                    return true;                
+                }
             }
         } 
         return false;
@@ -127,6 +129,35 @@ class graph
         }
         return false;
     }
+    void dfstopologicalsort(int u, vector<bool> &visited, stack<int> &S)
+    {
+        visited[u]=true;
+        for(auto v:l[u])
+        {
+            if(!visited[v])
+            {
+                dfstopologicalsort(v,visited,S);
+            }
+        }
+        S.push(u);
+    }
+    void toposort()
+    {
+        vector<bool>vis(v,false);
+        stack<int>s;
+        for(int i=0;i<v;i++)
+        {
+            if(!vis[i])
+            {
+                dfstopologicalsort(i,vis,s);
+            }
+        }
+        while (s.size()>0)
+        {
+            cout<<s.top()<<" ";
+            s.pop();
+        }
+    }
 };
 int main()
 {
@@ -136,6 +167,8 @@ int main()
     g.addEdge(0,3);
     g.addEdge(1,2);
     g.addEdge(3,4);
+    g.toposort();
+    cout<<"topological sort"<<endl;
     g.bfs();
     cout<<endl;
     cout<<g.isCyclic();
