@@ -158,15 +158,60 @@ class graph
             s.pop();
         }
     }
+    void toposort_kahn()
+    {
+        vector<int>res;
+        vector<int>indegree(v,0);
+        for(int i=0;i<v;i++)
+        {
+            for(auto v:l[i])
+            {
+                indegree[v]++;
+            }
+        }
+        queue<int>q;
+        for(int i=0;i<v;i++)
+        {
+            if(indegree[i]==0)
+            {
+                q.push(i);
+            }
+        }
+        while(q.size()>0)
+        {
+            int curr=q.front();
+            q.pop();
+            res.push_back(curr);
+            for(auto v:l[curr])
+            {
+                indegree[v]--;
+                if(indegree[v]==0)
+                {
+                    q.push(v);
+                }
+            }
+        }
+        if(res.size() != v)
+        {
+        cout << "Cycle detected, topological sort not possible";
+        return;
+        }
+            for(auto x:res)
+            {
+                cout<<x<<" ";
+            }  
+            cout<<endl;
+    }
 };
 int main()
 {
     graph g(6);
-    g.addEdge(0,1);
-    g.addEdge(0,2);
-    g.addEdge(0,3);
-    g.addEdge(1,2);
-    g.addEdge(3,4);
+    g.addEdge(3,1);
+    g.addEdge(2,3);
+    g.addEdge(4,0);
+    g.addEdge(4,1);
+    g.addEdge(5,0);
+    g.addEdge(5,2);
     g.toposort();
     cout<<"topological sort"<<endl;
     g.bfs();
@@ -176,5 +221,7 @@ int main()
     cout<<g.isCyclicBfs();//O(V+E)
     cout<<endl;
     g.dfs();
+   g.toposort_kahn(); // remove edge and check for cycle remove this--> l[v].push_back(u);
+
 
 }  
